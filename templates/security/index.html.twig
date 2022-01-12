@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!{% endblock %}
+
+{% block body %}
+{% include "header.html.twig" %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">{{ controller_name }}</div> 
+                <div class="card-body">
+                    {{form_start(form)}}
+
+                        {{ form_row(form.email , {'attr': {'placeholder':'Email'}}) }}
+
+
+                        {{ form_row(form.username , {'attr': {'placeholder':'Username '}}) }}
+                
+
+                        {# Pour gerer les erreurs et les label pour les input  #}
+                        {{ form_row(form.password , {'attr': {'placeholder':'password'}}) }}
+            
+                    
+                        {{ form_row(form.confirm_password , {'attr': {'placeholder':'Confirme votre password'}}) }}
+
+                    <div class="form-group py-2">
+                        <button type="submit" class="btn btn-primary">
+                                Enregisters 
+                        </button>
+                        <a href="{{ path('login') }}" class="btn btn-success">
+                                Se Connecter 
+                        </a>
+                    </div>
+                    {{form_end(form)}}
+                </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% include "footer.html.twig" %}
+{% endblock %}

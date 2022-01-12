@@ -1,0 +1,55 @@
+     <!-- Navigation-->
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+     <div class="container px-4 px-lg-5">
+         <a class="navbar-brand" href="{{path('welcome')}}">Djib-Shop</a>
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{path('welcome')}}">
+                   Home 
+                </a></li>
+                 {# {% if is_granted('ROLE_USER') %}
+                 <li class="nav-item"><a class="nav-link" href="{{path('product-new')}}">Produit</a></li>
+                {% endif %} #}
+                {% if is_granted('ROLE_USER') %}
+                 <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                         <li><a class="dropdown-item" href="{{path('product-new')}}">Gestion des Produits</a></li>
+                         <li><hr class="dropdown-divider" /></li>
+                         <li><a class="dropdown-item" href="{{path('category')}}">Gestion des categories</a></li>
+                         <li><a class="dropdown-item" href="{{path('ordereds')}}">Gestion des commande</a></li>
+                         <li><a class="dropdown-item" href="{{path('logout')}}">Deconnexion</a></li>
+                         <li><a class="dropdown-item" href="#">
+                            {% if  app.user %}
+                                {{ app.user.username }}
+                            {% endif %}
+                        </a></li>  
+                     </ul>
+                 </li>
+                {% endif %}
+             </ul>
+             <form class="d-flex p-1" method="post" action="">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Rechercher un produit ou marque"  />
+                {% if  categories  | length > 0 %}
+                    <select class="form-select me-2" aria-label="Default select example" name="category">
+                        {% if  categories  | length > 0 %}
+                                <option value="null">Filter par Categories</option>
+                            {% for category  in categories %}
+                                <option value="{{category.id}}">{{category.libelle}}</option>
+                            {% endfor %} 
+                        {% endif %} 
+                    </select>
+                {% endif %}
+                    <button class="btn btn-outline-dark " type="submit">Rechercher</button>
+            </form>
+             <form class="d-flex px-5" >
+                 <a class="btn btn-outline-dark" href="{{path('cart')}}">
+                    <i class="bi-cart-fill me-1"></i>
+                       Cart
+                     <span class="badge bg-dark text-white ms-1 rounded-pill">{{items | length}}</span>
+                </a>
+             </form>
+         </div>
+     </div>
+ </nav>
