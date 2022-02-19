@@ -57,7 +57,7 @@
               </ul>
           </div>
       </div>
-      <div class="col-12 py-5">
+    <div class="col-12 py-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       {% if  products | length > 0 %}
               {% for product in products %}
@@ -70,7 +70,7 @@
                       <!-- Product image-->
                       <img class="card-img-top" src="{{ asset('uploads/photos/' ~ product.photo) }}" alt="..." />
                       <!-- Product details-->
-                      <div class="card-body p-4">
+                      <div class="card-body p-5">
                           <div class="text-center">
                               <!-- Product name-->
                           <h5 class="fw-bolder">{{product.libelle}}</h5>
@@ -79,8 +79,8 @@
                           </div>
                       </div>
                       <!-- Product actions-->
-                      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                          <div class="row">
+                      <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
+                          <div class="row p-2">
                             <div class="col">
                                   <a class="btn btn-outline-dark mt-auto" href="{{path('show', {'id': product.id})}}"><i class="bi-eye-fill me-1"></i>Voir</a>
                             </div>
@@ -94,7 +94,7 @@
           {% endfor %}
       {% endif %}
 
-  </div>
+    </div>
       </div>
   </div>
 </div>

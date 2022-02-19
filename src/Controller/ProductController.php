@@ -54,13 +54,14 @@ class ProductController extends AbstractController
 
         $form = $this->createForm(ProductFormType::class, $product);
         $form->handleRequest($request);
+       // dd($form);
         if ($form->isSubmitted() && $form->isValid()) { 
             $brochureFile = $form->get('photo')->getData();
             if ($brochureFile) {
                 $brochureFileName = $fileUploader->upload($brochureFile);
                 $product->setPhoto($brochureFileName);
             }
-            $product->setArchived(1);
+           // $product->setArchived(1);
             $product->setCreatedAt(new \DateTime());
             $em = $manager->getManager();
             $em->persist($product);

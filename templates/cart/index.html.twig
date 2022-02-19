@@ -5,12 +5,21 @@
 {% block body %}
   {% include "header.html.twig" %}
   {% include "bannier.html.twig" %}
+   
    <!-- Section-->
    <section class="py-5">
-   <div class="container px-4 px-lg-5 mt-5">
-       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+   <div class="container-fluid px-4 px-lg-5 mt-5">
+       <div class="row">
+       <div class="col-3">
+        <ul class="list-group">
+            {% for categorie in categories %}     
+                <li class="list-group-item list-group-item-action align-items-center"><a href="#">{{categorie.libelle}}</a></li>
+            {% endfor %}
+        </ul>
+       </div>
+       <div class="col-9">
        {% if items | length > 0 %}
-        <table class="table table-bordered">
+           <table class="table table-bordered">
             <thead>
                 <tr>
                 <th scope="col">image</th>
@@ -74,12 +83,48 @@
                 <h6 class="py-3 text-center">Votre panier est vide </h6>
                 <a class="btn btn-outline-dark" href="{{path('welcome')}}">Commencez vous Achetez</a>
             </div>
-        {% endif %}
-       </div>
-   </div>
-   <div class="container">
-        <div class="row">
         </div>
+        {% endif %}
+        </div>
+
    </div>
+     <div class="col-12 py-5">
+      <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+      {% if  products | length > 0 %}
+              {% for product in products %}
+              <div class="col mb-5">
+                  <div class="card h-100">
+                       {% if product.archived == 0 %}
+                            <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Pas Disponible</div>
+                       {% endif %}
+                      
+                      <!-- Product image-->
+                      <img class="card-img-top" src="{{ asset('uploads/photos/' ~ product.photo) }}" alt="..." />
+                      <!-- Product details-->
+                      <div class="card-body p-4">
+                          <div class="text-center">
+                              <!-- Product name-->
+                          <h5 class="fw-bolder">{{product.libelle}}</h5>
+                              <!-- Product price-->
+                              {{product.price}} fdj
+                          </div>
+                      </div>
+                      <!-- Product actions-->
+                      <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
+                          <div class="row p-2">
+                            <div class="col">
+                                  <a class="btn btn-outline-dark mt-auto" href="{{path('show', {'id': product.id})}}"><i class="bi-eye-fill me-1"></i>Voir</a>
+                            </div>
+                            <div class="col">
+                                  <a class="btn btn-outline-dark mt-auto" href="#"><i class="bi-cart-fill me-1"></i>Ajouter</a>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+      {% endif %}
+
+    </div>
 </section>
 {% endblock %}

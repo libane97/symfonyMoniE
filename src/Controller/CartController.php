@@ -20,15 +20,16 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name="cart")
      */
-    public function index(CategoryRepository $categoryRepository, Request $request , ProductRepository  $productRepository): Response
+    public function index(CategoryRepository $categoryRepository,ProductRepository  $productRepository): Response
     {
-        $category = $request->request->get('category');
+      //  $category = $request->request->get('category');
         $categories = $categoryRepository->findAll();
         return $this->render('cart/index.html.twig', [
             'controller_name' => 'CartController',
             'categories' => $categories,
             'items' => $this->cartService->getFullCart(),
-            'Totale' => $this->cartService->getTotale()
+            'Totale' => $this->cartService->getTotale(),
+            'products' => $productRepository->findAll(),
         ]);
     }
 

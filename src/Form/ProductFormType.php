@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType; 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ProductFormType extends AbstractType
 {
@@ -19,8 +20,14 @@ class ProductFormType extends AbstractType
             ->add('description')
             ->add('price')
            // ->add('archived')
+           ->add('archived', ChoiceType::class, [
+            'choices'  => [
+                'archived' => 1,
+                'Non archived' => 0,
+              ],
+             ])
            // ->add('createdAt')
-            ->add('photo', FileType::class, array('data_class' => null)
+            ->add('photo', FileType::class, array('data_class' => Product::class)
                 )
             ->add('category', EntityType::class, [
                 'class' => Category::class,

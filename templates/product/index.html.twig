@@ -14,7 +14,8 @@
                     {{form_row(form.libelle  , {'attr': {'placeholder':'Libelle de produit'}})}} 
                     {{form_row(form.description  , {'attr': {'placeholder':'Description de produit'}})}} 
                     {{form_row(form.price  , {'attr': {'placeholder':'Prix de produit'}})}} 
-                    {{form_row(form.photo  , {'attr': {'label':'Photo de produit'}})}} 
+                    {{form_row(form.photo)}} 
+                    {{form_row(form.archived)}} 
                     {{form_row(form.category  , {'attr': {'label':'Category de produit'}})}} 
                     <div class="form-group py-2">
                     <button type="submit" class="btn btn-primary">

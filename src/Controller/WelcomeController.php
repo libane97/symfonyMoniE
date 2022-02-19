@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
+use Knp\Component\Pager\PaginatorInterface;
 
 class WelcomeController extends AbstractController
 {
@@ -23,7 +24,7 @@ class WelcomeController extends AbstractController
     /**
      * @Route("/", name="welcome")
      */
-    public function index(CategoryRepository $categoryRepository, Request $request, ProductRepository $productRepository, SessionInterface $session): Response
+    public function index(CategoryRepository $categoryRepository, Request $request, ProductRepository $productRepository, SessionInterface $session,  PaginatorInterface $paginator): Response
     {
         $category = $request->request->get('category');
         $search = $request->request->get('search');
@@ -49,7 +50,11 @@ class WelcomeController extends AbstractController
             $products = $repo->findAll();
         }
         
-
+        $products = $paginator->paginate(
+            $products, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/
+        );
 
         // gestion panier 
         $panier = $session->get('panier', []); 

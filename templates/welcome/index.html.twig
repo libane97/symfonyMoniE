@@ -28,7 +28,7 @@
                         {% for product in products %}
                             <div class="col-md-6 mb-5">
                                 <div class="card h-100">
-                                    {% if product.archived > 0 %}
+                                    {% if product.archived == 0 %}
                                       <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Pas Disponible</div>
                                     {% endif %}
                                     
@@ -40,12 +40,17 @@
                                             <!-- Product name-->
                                         <h5 class="fw-bolder">{{product.libelle}}</h5>
                                             <!-- Product price-->
-                                            {{product.price}} fdj
+                                            {{product.price}} cfa
                                         </div>
                                     </div>
                                     <!-- Product actions-->
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('cart_add', {'id': product.id})}}"> <i class="bi-cart-fill me-1"></i> Ajouter</a></div>
+                                       {% if product.archived != 0 %}
+                                          <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('cart_add', {'id': product.id})}}"> <i class="bi-cart-fill me-1"></i> Ajouter</a></div>
+                                       {% endif %}
+                                       {% if product.archived == 0 %}
+                                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('show', {'id': product.id})}}"> <i class="bi-eye-fill me-1"></i> Voir </a></div>
+                                       {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -57,6 +62,7 @@
                         <a class="btn btn-outline-dark" href="{{path('welcome')}}">Actualisée le boutique</a>
                     </div>
                     {% endif %}
+                    
                 </div>
             </div>
         </section>
