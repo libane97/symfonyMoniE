@@ -27,7 +27,7 @@ class ProductFormType extends AbstractType
               ],
              ])
            // ->add('createdAt')
-            ->add('photo', FileType::class, array('data_class' => Product::class)
+            ->add('photo', FileType::class, array('data_class' => null)
                 )
             ->add('category', EntityType::class, [
                 'class' => Category::class,

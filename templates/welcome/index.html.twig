@@ -26,8 +26,8 @@
                     </div> #}
                     {% if products | length > 0 %}
                         {% for product in products %}
-                            <div class="col-md-6 mb-5">
-                                <div class="card h-100">
+                            <div class="col-md-6">
+                                <div class="card card-style h-100">
                                     {% if product.archived == 0 %}
                                       <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Pas Disponible</div>
                                     {% endif %}
@@ -44,7 +44,7 @@
                                         </div>
                                     </div>
                                     <!-- Product actions-->
-                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="card-footer border-top-0 bg-transparent">
                                        {% if product.archived != 0 %}
                                           <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('cart_add', {'id': product.id})}}"> <i class="bi-cart-fill me-1"></i> Ajouter</a></div>
                                        {% endif %}
