@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class OrderedController extends AbstractController
 {
@@ -44,6 +46,7 @@ class OrderedController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/ordereds", name="ordereds")
      */
     public function orderedAll(): Response
@@ -59,6 +62,7 @@ class OrderedController extends AbstractController
 
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/ordereds/{id}/show", name="orderedsRun", methods={"POST","GET"})
      */
     public function show(int $id, Ordered $ordered)
@@ -183,5 +187,73 @@ class OrderedController extends AbstractController
             ->subject('Djib-Shop')
             ->text('Votre commande à été bien enregistre !');
             $this->mailer->send($email);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/ordereds/{id}/play", name="orderedsPlay", methods={"POST","GET"})
+     */
+    public function play(int $id, Ordered $ordered, ManagerRegistry $manager)
+    {
+        
+        $repo = $this->getDoctrine()->getRepository(Ordered::class);
+        $orderedDetail = $repo->find($id);
+      //  dd($orderedDetail);
+        $orderedDetail->setStatusOrdered(1);
+        $em = $manager->getManager();
+        $em->persist($orderedDetail);
+        $em->flush();
+        return $this->redirectToRoute('ordereds');
+    }
+    
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/ordereds/{id}/pause", name="orderedsPause", methods={"POST","GET"})
+     */
+    public function pause(int $id, Ordered $ordered, ManagerRegistry $manager)
+    {
+        
+        $repo = $this->getDoctrine()->getRepository(Ordered::class);
+        $orderedDetail = $repo->find($id);
+      //  dd($orderedDetail);
+        $orderedDetail->setStatusOrdered(0);
+        $em = $manager->getManager();
+        $em->persist($orderedDetail);
+        $em->flush();
+        return $this->redirectToRoute('ordereds');
+    }
+
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/ordereds/{id}/generate_pdf", name="generate_pdf", methods={"POST","GET"})
+     */
+    public function generate_pdf(int $id,Ordered $ordered){
+    
+        $options = new Options();
+        $options->set('defaultFont', 'Roboto');
+        
+       
+        $dompdf = new Dompdf($options);
+        
+        $data = array(
+            'headline' => 'my headline'
+        );
+        $repo = $this->getDoctrine()->getRepository(OrderedDetail::class);
+        $orderedDetail = $repo->findBy(['ordered' => $id]);
+        $html = $this->renderView('ordered/show.html.twig', [
+        'orderedDetail' => $orderedDetail, 
+        'categories' =>  $categories = $this->categoryRepository->findAll(),
+        'items' => $this->cartService->getFullCart(),
+        'ordered' => $ordered
+        ]);
+        
+       
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $dompdf->stream("testpdf.pdf", [
+            "Attachment" => true
+        ]);
     }
 }

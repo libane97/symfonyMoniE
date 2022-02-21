@@ -2,7 +2,7 @@
 
 {% block body %}
 {% include "header.html.twig" %}
-<div class="container py-3">
+<div class="container py-5">
     <div class="row">
         <div class="col-md-12">
             <div class="py-3">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered py-3">
-                        <thead>
+                       
                             <tr>
                                 <th scope="col">image</th>
                                 <th scope="col">Libelle </th>
@@ -27,15 +27,15 @@
                                 <th scope="col">Date de la commande</th>
                                 <th scope="col">Action</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                      
+                        
                             {% for ordered in orderedDetail %}
                                 <tr>
                                      <td class="text-center"><img class="card-img-top image" src="{{ asset('uploads/photos/' ~ ordered.product.photo) }}" alt="..."/></td>
                                      <td class="text-center">{{ordered.product.libelle}}</td>
                                      <td class="text-center">{{ordered.product.price}}</td>
                                      <td class="text-center">{{ordered.quantity}}</td>
-                                     <td class="text-center">{{ordered.dateOrder | date("m/d/Y g:ia")}}</td>
+                                     <td class="text-center">{{ordered.dateOrder | date('d/m/Y') ~ ' à ' ~  ordered.dateOrder | date('H:i:s')  }}</td>
                                      <td class="text-center">
                                         <a class="btn btn-warning" href="">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
@@ -46,17 +46,17 @@
                                      </td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
-                        <tfooter>
                             <tr>
                              <td colspan="5" >Totale de la commande</td>
                              <td class="text-center">{{ordered.TotalOrdered}} CFA</td>
                             </tr>
-                        </tfooter>
+                                 
+                       
                     </table>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 {% endblock %}

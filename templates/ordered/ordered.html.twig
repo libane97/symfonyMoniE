@@ -24,12 +24,14 @@
                     {% for ordered in ordereds %}
                         <tr>
                             <td>{{ordered.numeroOrder}}</td>
-                            <td>{{ordered.createdAt | date("m/d/Y g:ia") }}</td>
+                            <td>{{ordered.createdAt | date("m/d/Y") ~ ' à ' ~  ordered.createdAt | date('H:i:s') }}</td>
                             <td>{{ordered.customer.name}}</td>
                             {% if ordered.statusOrdered == 0 %}
                                   <td>En attente</td>
                             {% endif %}
-                            
+                             {% if ordered.statusOrdered == 1 %}
+                                  <td>En cour de traitement</td>
+                            {% endif %}
                             <td>{{ordered.TotalOrdered}} cfa</td>
                             <td>
                                 <a class="btn btn-warning" href="{{path('orderedsRun',{'id' : ordered.id})}}">
@@ -38,6 +40,21 @@
                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                                 </svg> 
                                 </a> 
+                                {% if ordered.statusOrdered == 0 %}
+                                <a class="btn btn-secondary" href="{{path('orderedsPlay',{'id' : ordered.id})}}">
+                                <i class="bi bi-play"></i>
+                                </a> 
+                                {% endif %}
+                                {% if ordered.statusOrdered == 1 %}
+                                <a class="btn btn-secondary" href="{{path('generate_pdf',{'id' : ordered.id})}}">
+                                   <i class="bi bi-printer"></i>
+                                </a> 
+                                {% endif %}
+                                 {% if ordered.statusOrdered == 1 %}
+                                <a class="btn btn-secondary" href="{{path('orderedsPause',{'id' : ordered.id})}}">
+                                    <i class="bi bi-pause"></i>
+                                </a> 
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

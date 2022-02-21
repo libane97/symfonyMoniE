@@ -45,7 +45,7 @@ class SecurityController extends AbstractController
  
         $categories = $categoryRepository->findAll();
         return $this->render('security/index.html.twig', ['form' => $form->createView(), 
-        'controller_name' => 'Creer un user',
+        'controller_name' => 'Creer un Utilisateur',
         'categories' => $categories,
         'items' => $this->cartService->getFullCart(),
         'Totale' => $this->cartService->getTotale()
@@ -62,7 +62,9 @@ class SecurityController extends AbstractController
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        
+        if ($lastUsername) {
+          return $this->redirectToRoute('product');
+        }
        return $this->render('security/login.html.twig', [
         'last_username' => $lastUsername,
         'error' => $error,

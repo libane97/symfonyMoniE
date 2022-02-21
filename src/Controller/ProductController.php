@@ -31,6 +31,7 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/product", name="product")
      */
     public function index(): Response
