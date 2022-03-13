@@ -84,26 +84,26 @@ class OrderedController extends AbstractController
     public function createAndStore(Request $request, Customer $customer = null, ManagerRegistry $manager): Response
     {
         $cus =  $request->request->get('customer');
+       
         $repo = $this->getDoctrine()->getRepository(Customer::class);
         $customer = $repo->findBy(['phone' => $cus]); 
         foreach ($customer as $key) {
-               $customer = $key;
+            $customer = $key;
         }    
         // die();
         // $repo = $this->getDoctrine()->getRepository(Customer::class);
-       if ($customer == null) {
+        if ($customer == null) {
             $customer = new Customer(); 
-       }
-      
+        }
         $form = $this->createForm(CustomerFormType::class, $customer);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) { 
+           dd($customer);
             $repo = $this->getDoctrine()->getRepository(Commune::class);
             $com = $repo->find($request->request->get('commune'));
             $em = $manager->getManager();
             $em->persist($customer);
             $em->flush();
-           
             $ordered = new Ordered(); 
             $ordered->setCommune($com);
             $ordered->setQuantity(1);
@@ -113,12 +113,13 @@ class OrderedController extends AbstractController
                 $ordered->setTotalOrdered($this->cartService->getTotale() +  $com->getTarif());
             }
             $ordered->setCreatedAt(new \DateTime());
-            $ordered->setNumeroOrder("EM"."".strval(rand(1,1000))."".$customer->getId());
-            $ordered->setStatusOrdered(0);
+            $ordered->setNumeroOrder("EM"."".strval(rand(1,1000)+1));
+            $ordered->setStatusOrdered(-1);
             $ordered->setCustomer($customer);
+            
             $em = $manager->getManager();
             $em->persist($ordered);
-           $em->flush();
+            $em->flush();
             $panier = $this->cartService->getFullCart();
             foreach ($panier as $key) {
                 $orderedDetail = new OrderedDetail(); 
@@ -146,7 +147,8 @@ class OrderedController extends AbstractController
             // $this->mailerService->sendEmail('libanehassan23@gmail.com',$customer->getEmail(),  $this->render('email/email.html.twig', compact('customer')),
             //      'text/html');
             $this->addFlash('message', 'success', 'Votre commande à été bien enregistre! veuillez verifier votre mail');
-            $this->mailerService->sendEmailCustomer($customer->getEmail());
+            // Une fois que vous aurez la connexion active la ligne 151 pour envoi un mail au services clientele pour traiatement la commande avec le numero de la commande et le nom du client avec son numero de telephone 
+            // $this->mailerService->sendEmailCustomer($customer->getEmail());
             return $this->redirectToRoute('ordered');
         }
 
@@ -187,6 +189,11 @@ class OrderedController extends AbstractController
             ->subject('Djib-Shop')
             ->text('Votre commande à été bien enregistre !');
             $this->mailer->send($email);
+    }
+
+    private function sendEmailNotificationServiceOrderedForShop($to, $phoneCustomer, $nameCustomer, $numOrdered)
+    {
+        # code...
     }
 
     /**
@@ -237,7 +244,7 @@ class OrderedController extends AbstractController
         $dompdf = new Dompdf($options);
         
         $data = array(
-            'headline' => 'my headline'
+            'headline' => 'La Facture de la commande'
         );
         $repo = $this->getDoctrine()->getRepository(OrderedDetail::class);
         $orderedDetail = $repo->findBy(['ordered' => $id]);

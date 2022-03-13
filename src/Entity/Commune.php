@@ -44,6 +44,11 @@ class Commune
      */
     private $ordereds;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $archived;
+
     public function __construct()
     {
         $this->ordereds = new ArrayCollection();
@@ -128,6 +133,18 @@ class Commune
                 $ordered->setCommune(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getArchived(): ?int
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?int $archived): self
+    {
+        $this->archived = $archived;
 
         return $this;
     }

@@ -52,7 +52,7 @@ class CategoryController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/category/{id}/delete", name="delete-category")
     */
     public function delete(Category $category)

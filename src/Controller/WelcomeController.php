@@ -47,7 +47,7 @@ class WelcomeController extends AbstractController
             $products = $repo->findBy(['category' => $category]);
         }
         else {
-            $products = $repo->findAll();
+            $products = $productRepository->findAllProduct();
         }
         
         $products = $paginator->paginate(

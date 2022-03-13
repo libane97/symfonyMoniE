@@ -13,19 +13,19 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Repository\CategoryRepository;
 use App\Services\Cart\CartService;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class SecurityController extends AbstractController
 {
     protected $cartService;
-
+   
     public function __construct(CartService $cartService)
     {
-      return  $this->cartService = $cartService;
+     return $this->cartService = $cartService;
     }
 
 
     /**
-     * @Route("/security", name="security")
+     * @Route("/security/register", name="security")
      */
     public function index(Request $request,  ManagerRegistry $manager, UserPasswordEncoderInterface $encoder, CategoryRepository $categoryRepository): Response
     {
@@ -53,18 +53,20 @@ class SecurityController extends AbstractController
     }
 
     /**
-    * @Route("/login", name="login")
+    * @Route("/security/login", name="login")
     */
-   public function login(AuthenticationUtils $authenticationUtils, CategoryRepository $categoryRepository): Response
+   public function login(AuthenticationUtils $authenticationUtils, Request $request ,CategoryRepository $categoryRepository): Response
    {
+
+        // dd($authenticationUtils);
        // get the login error if there is one
          $error = $authenticationUtils->getLastAuthenticationError();
-
+        
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        if ($lastUsername) {
-          return $this->redirectToRoute('product');
-        }
+        /*   if ($lastUsername) {
+            return $this->redirectToRoute('welcome');
+          } */
        return $this->render('security/login.html.twig', [
         'last_username' => $lastUsername,
         'error' => $error,
@@ -75,7 +77,7 @@ class SecurityController extends AbstractController
    }
 
     /**
-     * @Route("/logout", name="logout")
+     * @Route("/security/logout", name="logout")
      */
     public function logout(){}
 

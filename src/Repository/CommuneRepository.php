@@ -47,4 +47,19 @@ class CommuneRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    // Get data No Archived for listing
+    /**
+     * @return Commune[] Returns an array of Commune objects
+    */
+    public function noArchivedCommune()
+    {
+        return $this->createQueryBuilder('c')
+        ->andWhere('c.archived = :val')
+        ->setParameter('val', 1)
+        ->getQuery()
+        ->getResult()
+    ;
+    }
 }
