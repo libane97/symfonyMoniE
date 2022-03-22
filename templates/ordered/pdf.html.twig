@@ -1,13 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-{% include "header.html.twig" %}
 <div class="container py-5">
     <div class="row">
         <div class="col-md-12">
-            <div class="py-3">
-                 <a class="btn btn-primary" href="{{path('ordereds')}}">Liste de la commande</a>
-            </div>
             <div class="card">
                 <div class="card-header">
                      <div class="row">
@@ -20,42 +16,25 @@
                     <table class="table table-bordered py-3">
                        
                             <tr>
-                                <th scope="col">image</th>
                                 <th scope="col">Libelle </th>
                                 <th scope="col">prix</th>
                                 <th scope="col">quantity</th>
                                 <th scope="col">Date de la commande</th>
-                                <th scope="col">Action</th>
                             </tr>
                       
                         
                             {% for ordered in orderedDetail %}
                                 <tr>
-                                     <td class="text-center"><img class="card-img-top image" src="{{ asset('uploads/photos/' ~ ordered.product.photo) }}" alt="..."/></td>
                                      <td class="text-center">{{ordered.product.libelle}}</td>
                                      <td class="text-center">{{ordered.product.price}}</td>
-                                     <td class="text-center">{{ordered.quantity}}</td>
+                                     <td class="text-center">{{ordered.quantity}} quantite</td>
                                      <td class="text-center">{{ordered.dateOrder | date('d/m/Y') ~ ' à ' ~  ordered.dateOrder | date('H:i:s')  }}</td>
-                                     <td class="text-center">
-                                        <a class="btn btn-danger" href="#">
-                                            <i class="bi bi-file-x"></i>
-                                        </a> 
-                                     </td>
                                 </tr>
                             {% endfor %}
                             <tr>
                              <td colspan="5" >Totale de la commande</td>
                              <td class="text-center">{{ordered.TotalOrdered}} CFA</td>
                             </tr>
-                            <tr>
-                            <td colspan="5" >Acitve Livraison de la commande</td>
-                            <td class="text-center">
-                                <a class="btn btn-warning" onclick="return confirm(`Voulez-vous Confirmer la livraison de la commande numero {{ordered.numeroOrder}}?`)" href="{{path('runlivraison',{'id' : ordered.id})}}">
-                                    <i class="bi bi-truck"></i>
-                                </a> 
-                            </td>
-                            </tr>
-                       
                     </table>
                 </div>
             </div>

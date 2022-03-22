@@ -47,4 +47,30 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+     /**
+      * @return Category[] Returns an array of Category objects
+    */
+    public function selectOnArchive()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.archived = :val')
+            ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+      /**
+      * @return Category[] Returns an array of Category objects
+    */
+    public function selectInArchive()
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.archived = :val')
+            ->setParameter('val', 0)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -46,7 +46,7 @@ class ProductController extends AbstractController
      * @Route("/product/new", name="product-new")
      * @Route("/product/{id}/edit", name="update")
      */
-    public function createAndStore(Product $product = null, Request $request, FileUploader $fileUploader, ManagerRegistry $manager, ProductRepository $productRepository): Response
+    public function createAndStoreOrUpdate(Product $product = null, Request $request, FileUploader $fileUploader, ManagerRegistry $manager, ProductRepository $productRepository): Response
     {
         $search = $request->request->get('search');
         if (!$product) {

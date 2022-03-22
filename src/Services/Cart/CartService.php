@@ -1,5 +1,9 @@
 <?php 
 namespace App\Services\Cart;
+
+use App\Entity\Customer;
+use App\Entity\Ordered;
+use App\Entity\OrderedDetail;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Repository\ProductRepository;
 
@@ -84,6 +88,28 @@ class CartService
     //     $panier = $this->session->get('panier', []); 
     //     unset($panier);
     // }
+
+
+    public function ConfirmeDataCustomer(Customer $customer)
+    {
+       $this->session->set('customer', $customer);
+     //  $this->session->set('ordered', $ordered);
+    }
+
+    public function getDataConfirmCustomer(){
+        
+        return $this->session->get('customer');
+    }
+
+    public function ConfirmeDataOrdered(Ordered $ordered)
+    {
+        $this->session->set('ordered', $ordered);
+    }
+
+    public function getDataConfirmOrdered(){
+        
+        return $this->session->get('ordered');
+    }
     
 }
 

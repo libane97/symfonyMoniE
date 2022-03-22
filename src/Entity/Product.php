@@ -46,8 +46,8 @@ class Product
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\File(mimeTypes={ "image/png", "image/jpeg" }) 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\File(mimeTypes={ "image/png", "image/jpeg", "image/jpg" }) 
      */
     private $photo;
 
@@ -61,13 +61,16 @@ class Product
      */
     private $orderedDetails;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $quantity;
+
     public function __construct()
     {
         $this->orderedDetails = new ArrayCollection();
     }
 
-
-   
     public function getId(): ?int
     {
         return $this->id;
@@ -184,6 +187,18 @@ class Product
                 $orderedDetail->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

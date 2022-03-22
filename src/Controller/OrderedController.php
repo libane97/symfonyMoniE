@@ -16,6 +16,8 @@ use App\Entity\Customer;
 use App\Entity\Ordered;
 use App\Entity\OrderedDetail;
 use App\Entity\Commune;
+use App\Entity\Livraison;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Mailer\MailerInterface;
@@ -35,7 +37,7 @@ class OrderedController extends AbstractController
      OrderedRepository $orderedRepository,
      MailerInterface $mailer,
      MailerService $mailerService
-     )
+    )
     {
         $this->categoryRepository = $categoryRepository;
         $this->cartService = $cartService;
@@ -77,14 +79,30 @@ class OrderedController extends AbstractController
         ]);
     }
 
+     /**
+     * @Route("/orderedConfirm", name="confirm-ordered")
+     */
+    public function confirmOrdered()
+    {
+        dd($this->cartService->getDataConfirmOrdered());
+        return $this->render('ordered/confirmeOrdered.html.twig', [
+            'controller_name' => 'OrderedController',
+            'categories' =>  $categories = $this->categoryRepository->findAll(),
+            'items' => $this->cartService->getFullCart(),
+            'Totale' => $this->cartService->getTotale()
+        ]);
+    }
     /**
      * @Route("/ordered", name="ordered")
      * @Route("/ordered/customer", name="ordered-get")
      */
     public function createAndStore(Request $request, Customer $customer = null, ManagerRegistry $manager): Response
     {
-        $cus =  $request->request->get('customer');
        
+        if (empty($this->cartService->getFullCart())) {
+            return $this->redirectToRoute('welcome');
+        }
+        $cus =  $request->request->get('customer');
         $repo = $this->getDoctrine()->getRepository(Customer::class);
         $customer = $repo->findBy(['phone' => $cus]); 
         foreach ($customer as $key) {
@@ -98,12 +116,13 @@ class OrderedController extends AbstractController
         $form = $this->createForm(CustomerFormType::class, $customer);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) { 
-           dd($customer);
             $repo = $this->getDoctrine()->getRepository(Commune::class);
             $com = $repo->find($request->request->get('commune'));
-            $em = $manager->getManager();
+            /* dd($com ); */
+           /*  $em = $manager->getManager();
             $em->persist($customer);
-            $em->flush();
+            $em->flush(); */
+            $this->cartService->ConfirmeDataCustomer($customer);
             $ordered = new Ordered(); 
             $ordered->setCommune($com);
             $ordered->setQuantity(1);
@@ -117,9 +136,10 @@ class OrderedController extends AbstractController
             $ordered->setStatusOrdered(-1);
             $ordered->setCustomer($customer);
             
-            $em = $manager->getManager();
+            /* $em = $manager->getManager();
             $em->persist($ordered);
-            $em->flush();
+            $em->flush(); */
+            $this->cartService->ConfirmeDataOrdered($ordered);
             $panier = $this->cartService->getFullCart();
             foreach ($panier as $key) {
                 $orderedDetail = new OrderedDetail(); 
@@ -127,12 +147,12 @@ class OrderedController extends AbstractController
                 $orderedDetail->setDateOrder(new \DateTime());
                 $orderedDetail->setProduct($key['product']);
                 $orderedDetail->setOrdered($ordered);
-                $em = $manager->getManager();
+               /*  $em = $manager->getManager();
                 $em->persist($orderedDetail);
-                $em->flush();
-                if ($orderedDetail) {
+                $em->flush(); */
+                /* if ($orderedDetail) {
                     $this->cartService->remove($key['product']->getId());
-                }
+                } */
             }
           
             // $message = (new \Swift_Message('Votre commande' ."  ".$ordered->getNumeroOrder()))
@@ -149,7 +169,7 @@ class OrderedController extends AbstractController
             $this->addFlash('message', 'success', 'Votre commande à été bien enregistre! veuillez verifier votre mail');
             // Une fois que vous aurez la connexion active la ligne 151 pour envoi un mail au services clientele pour traiatement la commande avec le numero de la commande et le nom du client avec son numero de telephone 
             // $this->mailerService->sendEmailCustomer($customer->getEmail());
-            return $this->redirectToRoute('ordered');
+            return $this->redirectToRoute('confirm-ordered');
         }
 
         return $this->render('ordered/index.html.twig', [
@@ -162,6 +182,29 @@ class OrderedController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/ordered/{id}/livraison", name="runlivraison")
+    */
+    public function runlivraison($id, ManagerRegistry $manager)
+    {
+       $repo = $this->getDoctrine()->getRepository(Ordered::class);
+       $ordered = $repo->find($id);
+       $livraison = new Livraison();
+       $livraison->setDatelivraison(new \DateTime());
+       $livraison->setOrdered($ordered);
+       $em = $manager->getManager();
+       $em->persist($livraison);
+       $em->flush();
+       return $this->redirectToRoute('ordereds');
+    }
+    /**
+     * @Route("/ordered/{ordered}/ordered", name="getOrderedbyProducts")
+    */
+    public function getOrderedbyProduct(ManagerRegistry $manager, Ordered $ordered, ProductRepository $productRepository)
+    {
+        $products = $manager->getRepository(OrderedDetail::class)->findBy(['ordered' => $ordered]);
+        return null; 
+    }
     // private function sendEmail($expediteur, $msg, $numOrdered, \Swift_Mailer $mailer)
     // {
     //     $message = (new \Swift_Message($msg ."  ".$numOrdered))
@@ -206,7 +249,7 @@ class OrderedController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Ordered::class);
         $orderedDetail = $repo->find($id);
       //  dd($orderedDetail);
-        $orderedDetail->setStatusOrdered(1);
+        $orderedDetail->setStatusOrdered(0);
         $em = $manager->getManager();
         $em->persist($orderedDetail);
         $em->flush();
@@ -223,12 +266,14 @@ class OrderedController extends AbstractController
         $repo = $this->getDoctrine()->getRepository(Ordered::class);
         $orderedDetail = $repo->find($id);
       //  dd($orderedDetail);
-        $orderedDetail->setStatusOrdered(0);
+        $orderedDetail->setStatusOrdered(1);
         $em = $manager->getManager();
         $em->persist($orderedDetail);
         $em->flush();
         return $this->redirectToRoute('ordereds');
     }
+
+  
 
 
     /**
@@ -248,14 +293,13 @@ class OrderedController extends AbstractController
         );
         $repo = $this->getDoctrine()->getRepository(OrderedDetail::class);
         $orderedDetail = $repo->findBy(['ordered' => $id]);
-        $html = $this->renderView('ordered/show.html.twig', [
+        $html = $this->renderView('ordered/pdf.html.twig', [
         'orderedDetail' => $orderedDetail, 
-        'categories' =>  $categories = $this->categoryRepository->findAll(),
+        'categories' =>  $this->categoryRepository->findAll(),
         'items' => $this->cartService->getFullCart(),
         'ordered' => $ordered
         ]);
-        
-       
+           
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();

@@ -11327,3 +11327,16 @@ textarea.form-control-lg {
   box-shadow: 0 1px 2px #808080;
   border-radius : 25px 25px;
 } 
+
+.rounded-circles{
+   width: 300px; 
+}
+
+.linkWhatsapp{
+   color: white;
+   font-weight: 300;
+}
+.linkWhatsapp:hover{
+   color: white;
+   text-overflow: unset;
+}

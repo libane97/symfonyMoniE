@@ -18,39 +18,7 @@
         </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">Formulaire de commande</div>
-                <div class="card-body">
-                    {{ form_start(form) }} 
-                    
-                    {{form_row(form.name  , {'attr': {'placeholder':'votre nom'}})}} 
-                    {{form_row(form.phone  , {'attr': {'placeholder':'votre telephone'}})}} 
-                    {{form_row(form.email  , {'attr': {'placeholder':'votre email'}})}} 
-                    {{form_row(form.phoneFix  , {'attr': {'label':'votre email'}})}} 
-                    {{form_row(form.particularInfo  , {'attr': {'label':'Vous voulez ajouter autres option ecrivez ici '}})}} 
-                    <div class="form-group py-2">
-                        {% if  communs  | length > 0 %}
-                            <select class="form-select me-2" aria-label="Default select example" name="commune">
-                                {% if  communs  | length > 0 %}
-                                        <option value="null">selectionnez un addresse livraison</option>
-                                    {% for commun  in communs %}
-                                        <option value="{{commun.id}}">{{commun.libelle}} - {{commun.tarif}} cfa</option>
-                                    {% endfor %} 
-                                {% endif %} 
-                            </select>
-                        {% endif %}
-                    </div>
-                    <div class="form-group py-2">
-                    <button type="submit" class="btn btn-outline-success">
-                            Valider
-                    </button>
-                    </div>
-                    {{ form_end(form) }} 
-                </div>
-            </div>     
-        </div>
+    <div class="row py-5">
     <div class="col-md-8">
         <div class="card">
         <div class="card-header">Vos produits</div>

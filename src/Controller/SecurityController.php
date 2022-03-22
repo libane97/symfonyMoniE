@@ -13,7 +13,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Repository\CategoryRepository;
 use App\Services\Cart\CartService;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 class SecurityController extends AbstractController
 {
     protected $cartService;
@@ -55,15 +56,17 @@ class SecurityController extends AbstractController
     /**
     * @Route("/security/login", name="login")
     */
-   public function login(AuthenticationUtils $authenticationUtils, Request $request ,CategoryRepository $categoryRepository): Response
+   public function login(AuthenticationUtils $authenticationUtils,CategoryRepository $categoryRepository, TokenStorageInterface $tokenStorage): Response
    {
 
         // dd($authenticationUtils);
        // get the login error if there is one
          $error = $authenticationUtils->getLastAuthenticationError();
         
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+         // last username entered by the user
+         $lastUsername = $authenticationUtils->getLastUsername();
+         $objectUserConnect = $tokenStorage->getToken();
+       //  dd($objectUserConnect->getUser());
         /*   if ($lastUsername) {
             return $this->redirectToRoute('welcome');
           } */

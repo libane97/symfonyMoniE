@@ -16,7 +16,7 @@
                          <li><a class="dropdown-item" href="{{path('product-new')}}">Gestion des Produits</a></li>
                          <li><a class="dropdown-item" href="{{path('commun')}}">Gestion des communs</a></li>
                          <li><a class="dropdown-item" href="{{path('ordereds')}}">Gestion des commande</a></li>
-                         <li><a class="dropdown-item" href="{{path('ordereds')}}">Gestion des utilisateur</a></li>
+                         <li><a class="dropdown-item" href="{{path('security')}}">Gestion des utilisateur</a></li>
                          <li><hr class="dropdown-divider" /></li>
                          <li><a class="dropdown-item" href="#">
                             {% if  app.user %}
@@ -30,9 +30,9 @@
                  </li>
                 {% endif %}
              </ul>
-            <div class="container-fluid ">
+                <div class="container-fluid ">
                  <div class="row">
-                <div class="col-md-8">
+                 <div class="col-md-8">
                     <form class="d-flex " method="post" action="">
                             <input type="text" name="search" class="form-control me-2" placeholder="Rechercher un produit ou marque"  />
                         {% if  categories  | length > 0 %}
@@ -48,26 +48,39 @@
                             <button class="btn btn-dark shadow-lg button-style rounded" type="submit">Rechercher</button>
                     </form>
                 </div>
-                <div class="col-md-2 d-flex">
-                    <form class="d-flex" >
-                            <a class="btn btn-outline-dark" href="{{path('cart')}}">
-                            <i class="bi-cart me-1"></i>
-                                Cart
-                                <span class="badge bg-dark text-white ms-1 rounded-pill">{{items | length}}</span>
-                        </a>
-                    </form>
-                </div>
-                <div class="col-md-2">
-                    <form class="d-flex" >
-                            <a class="btn btn-outline-success" href="https://wa.me/221705655228/?text= Bievenue Chez Pape Diop Cordonnerie 2.0 ">
-                            <i class="bi bi-whatsapp me-1"></i>
-                                Contactez-nous
-                        </a>
-                    </form>
-                </div>
+                {% if is_granted('ROLE_USER') %}
+                    <div class="col-md-2">
+                        <form class="d-flex" >
+                                <a class="btn btn-outline-danger" href="{{path('logout')}}">
+                                <i class="bi bi-box-arrow-right me-1"></i>
+                                    Deconnexion
+                            </a>
+                        </form>
+                    </div>
+                {% endif %}
+                {% if (is_granted('ROLE_USER') != "ROLE_USER") %}
+                    <div class="col-md-2">
+                        <form class="" >
+                                <a class="btn btn-outline-dark" href="{{path('cart')}}">
+                                <i class="bi-cart me-1"></i>
+                                    Cart
+                                    <span class="badge bg-dark text-white ms-1 rounded-pill">{{items | length}}</span>
+                            </a>
+                        </form>
+                    </div>
+                    <div class="col-md-2">
+                        <form class="" >
+                                <a class="btn btn-outline-success" href="https://wa.me/221705655228/?text= Bievenue Chez Pape Diop Cordonnerie 2.0 ">
+                                <i class="bi bi-whatsapp me-1"></i>
+                                    Contactez-nous
+                            </a>
+                        </form>
+                    </div>
+                    
+                {% endif %}
              </div>
             </div>
-             
+                 
          </div>
      </div>
  </nav>
