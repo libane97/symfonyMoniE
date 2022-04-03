@@ -88,6 +88,7 @@ class WelcomeController extends AbstractController
      */
     public function show(Product $product, CategoryRepository $categoryRepository,  Request $request, ProductRepository $productRepository, SessionInterface $session): Response
     {
+
         $categories = $categoryRepository->findAll();
         $category = $request->request->get('category');
         $search = $request->request->get('search');

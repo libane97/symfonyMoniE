@@ -5,29 +5,17 @@
 {% block body %}
 {% include "header.html.twig" %}
 {% include "bannier.html.twig" %}
-<div class="container-fluid py-5">
-    <div class="row">
-        <div class="col-md-6">
-        <form action="" method="post">
-            <input type="text" name="customer" placeholder="Rechercher" class="form-control " />
-            <div class="form-group py-2">
-                <button type="submit" class="btn btn-outline-success">
-                        Rechercher
-                </button>
-            </div>
-        </form>
-        </div>
-    </div>
+<div class="container-fluid py-3">
     <div class="row py-5">
+    <div class="col-md-2"></div>
     <div class="col-md-8">
         <div class="card">
-        <div class="card-header">Vos produits</div>
+        <div class="card-header">La Confirmation de votre commande </div>
         <div class="card-body">
             {% if items | length > 0 %}
                 <table class="table table-bordered">
                 <thead>
                     <tr>
-                    <th scope="col">id</th>
                     <th scope="col">image</th>
                     <th scope="col">libelle</th>
                     <th scope="col">prix</th>
@@ -39,12 +27,11 @@
                 <tbody>
                         {% for item in items %}
                             <tr>
-                                <th scope="row">{{item.product.id}}</th>
                                 <td class="text-center"><img class="card-img-top image" src="{{ asset('uploads/photos/' ~ item.product.photo) }}" alt="..."/></td>
                                 <td class="text-center">{{item.product.libelle}}</td>
                                 <td class="text-center">{{item.product.price}} fDJ </td>
                                 <td class="text-center">{{item.quantity}}</td>
-                                <td class="text-center">{{item.product.price * item.quantity}} cfa </td>
+                                <td class="text-center">{{item.product.price * item.quantity}} fDJ </td>
                               
                             </tr>
                         {% endfor %}
@@ -52,13 +39,22 @@
                 <tfooter>
                     {% if items | length > 0 %}
                         <tr>
-                            <td colspan="5">Totale</td>
-                            <td><h5>{{Totale}} <span>cfa</span></h5></td>
+                            <td colspan="4">Le frais de livraison</td>
+                            <td><h5>{{ordered.commune.tarif}} <span>fDJ</span></h5></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">Totale de la commande</td>
+                            <td><h5>{{Totale}} <span>fDJ</span></h5></td>
+                        </tr>
+                  
+                        <tr>
+                            <td colspan="4">Totale</td>
+                            <td><h5>{{Totale + ordered.commune.tarif}} <span>fDJ</span></h5></td>
                         </tr>
                         
                     <tr>
-                        {# <td colspan="6"></td> #}
-                        {# <td> <a class="btn btn-outline-success" href="{{path('ordered')}}">Commande vos produits</a></td> #}
+                         <td colspan="4">Finalise votre commande</td> 
+                         <td> <a class="btn btn-outline-success" href="{{path('save-ordered')}}">Finalise </a></td> 
                     </tr>
                         
                     {% endif %}
@@ -78,6 +74,7 @@
         {% endif %}
         </div>
     </div>
+     <div class="col-md-2"></div>
   </div>
 </div>
 {% include "footer.html.twig" %}

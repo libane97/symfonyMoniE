@@ -28,11 +28,16 @@
                          <li><a class="dropdown-item" href="{{path('logout')}}">Deconnexion</a></li>
                      </ul>
                  </li>
+                <li class="nav-item p-2">
+                    {% if  app.user %}
+                        {{ app.user.username |  upper}}
+                    {% endif %}
+                </li>
                 {% endif %}
              </ul>
                 <div class="container-fluid ">
                  <div class="row">
-                 <div class="col-md-8">
+                 <div class="col-md-8 col-sm-12">
                     <form class="d-flex " method="post" action="">
                             <input type="text" name="search" class="form-control me-2" placeholder="Rechercher un produit ou marque"  />
                         {% if  categories  | length > 0 %}
@@ -49,7 +54,7 @@
                     </form>
                 </div>
                 {% if is_granted('ROLE_USER') %}
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-sm-12">
                         <form class="d-flex" >
                                 <a class="btn btn-outline-danger" href="{{path('logout')}}">
                                 <i class="bi bi-box-arrow-right me-1"></i>
@@ -59,7 +64,7 @@
                     </div>
                 {% endif %}
                 {% if (is_granted('ROLE_USER') != "ROLE_USER") %}
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-sm-12">
                         <form class="" >
                                 <a class="btn btn-outline-dark" href="{{path('cart')}}">
                                 <i class="bi-cart me-1"></i>

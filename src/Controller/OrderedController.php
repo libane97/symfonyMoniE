@@ -23,6 +23,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Notifier\Message\SmsMessage;
+use Symfony\Component\Notifier\TexterInterface;
 
 class OrderedController extends AbstractController
 {
@@ -79,19 +81,7 @@ class OrderedController extends AbstractController
         ]);
     }
 
-     /**
-     * @Route("/orderedConfirm", name="confirm-ordered")
-     */
-    public function confirmOrdered()
-    {
-        dd($this->cartService->getDataConfirmOrdered());
-        return $this->render('ordered/confirmeOrdered.html.twig', [
-            'controller_name' => 'OrderedController',
-            'categories' =>  $categories = $this->categoryRepository->findAll(),
-            'items' => $this->cartService->getFullCart(),
-            'Totale' => $this->cartService->getTotale()
-        ]);
-    }
+   
     /**
      * @Route("/ordered", name="ordered")
      * @Route("/ordered/customer", name="ordered-get")
@@ -180,6 +170,69 @@ class OrderedController extends AbstractController
             'form' => $form->createView(),  
             'Totale' => $this->cartService->getTotale()
         ]);
+    }
+
+    /**
+     * @Route("/orderedConfirm", name="confirm-ordered")
+    */
+    public function confirmOrdered()
+    {
+        return $this->render('ordered/confirmeOrdered.html.twig', [
+            'controller_name' => 'OrderedController',
+            'categories' =>  $categories = $this->categoryRepository->findAll(),
+            'items' => $this->cartService->getFullCart(),
+            'ordered' => $this->cartService->getDataConfirmOrdered(),
+            'Totale' => $this->cartService->getTotale()
+        ]);
+    }
+
+    /**
+     * @Route("/orderedSave", name="save-ordered")
+    */
+    public function saveOrdered(ManagerRegistry $manager)
+    {
+        $cle = "+00253";
+       $sms = new SmsMessage(
+            $cle.'77830971',
+            'Send Sms from my app'
+       );
+     //  dd($sms);
+     //  $sendMessage= $texterInterface->send($sms);
+       $getordered = $this->cartService->getDataConfirmOrdered();
+       $customer = $getordered->getCustomer();
+       $this->mailerService->sendEmailCustomer($customer->getEmail());
+       $em = $manager->getManager();
+       $em->persist($customer);
+       $em->flush();
+       $repo = $this->getDoctrine()->getRepository(Commune::class);
+       $com = $repo->find($getordered->getCommune()->getId());
+       $ordered = new Ordered();
+       $ordered->setCommune($com);
+       $ordered->setCustomer($getordered->getCustomer());
+       $ordered->setNumeroOrder($getordered->getNumeroOrder());
+       $ordered->setQuantity($getordered->getQuantity());
+       $ordered->setCreatedAt($getordered->getCreatedAt());
+       $ordered->setStatusOrdered($getordered->getStatusOrdered());
+       $ordered->setTotalOrdered($this->cartService->getTotale() +  $getordered->getCommune()->getTarif());
+       $em = $manager->getManager();
+       $em->persist($ordered);
+       $em->flush();
+       $panier = $this->cartService->getFullCart();
+       foreach ($panier as $key) {
+           $orderedDetail = new OrderedDetail(); 
+           $orderedDetail->setQuantity($key['quantity']);
+           $orderedDetail->setDateOrder(new \DateTime());
+           $orderedDetail->setProduct($key['product']);
+           $orderedDetail->setOrdered($ordered);
+            $em = $manager->getManager();
+           $em->persist($orderedDetail);
+           $em->flush(); 
+            if ($orderedDetail) {
+               $this->cartService->remove($key['product']->getId());
+           } 
+       }
+      // $this->mailerService->sendEmailFourniseur($customer->getPhone(),$customer->getName(), $ordered->getNumeroOrder());
+       return $this->redirectToRoute('confirm-ordered');
     }
 
     /**

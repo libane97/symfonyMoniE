@@ -25,7 +25,7 @@
                                 <th scope="col">prix</th>
                                 <th scope="col">quantity</th>
                                 <th scope="col">Date de la commande</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Prix totale</th>
                             </tr>
                       
                         
@@ -37,9 +37,7 @@
                                      <td class="text-center">{{ordered.quantity}}</td>
                                      <td class="text-center">{{ordered.dateOrder | date('d/m/Y') ~ ' à ' ~  ordered.dateOrder | date('H:i:s')  }}</td>
                                      <td class="text-center">
-                                        <a class="btn btn-danger" href="#">
-                                            <i class="bi bi-file-x"></i>
-                                        </a> 
+                                       {{ordered.product.price * ordered.quantity}}
                                      </td>
                                 </tr>
                             {% endfor %}
