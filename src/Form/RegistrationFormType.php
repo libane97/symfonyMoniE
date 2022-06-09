@@ -26,8 +26,7 @@ class RegistrationFormType extends AbstractType
                 'choices' => [
                     'Admin' => 'ROLE_ADMIN',
                     'Super' => 'ROLE_SUPER_ADMIN',
-                    'Medecin' => 'ROLE_MEDECIN',
-                    'Secretaire' => 'ROLE_SECRETAIRE',
+                    'Client' => 'ROLE_CLIENT',
                 ],
             ],
     ]) 

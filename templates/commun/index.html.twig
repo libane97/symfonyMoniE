@@ -25,7 +25,6 @@
         <div class="card">
         <div class="card-header">La Liste des commune</div>
         <div class="card-body">
-            {% if communs | length > 0 %} 
                 <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -80,17 +79,6 @@
                     
                 </tfooter>
             </table>
-        {% else %}
-        <div class="row">
-                {% for message in app.flashes('success') %}
-                <div class="alert alert-success p-3">
-                <h6 class="py-3 text-center"> {{ message }}  </h6>
-                <img class="card-img-top rounded-circle" src="{{asset('assets/images/shop.jpg')}}" alt="..." width="50px" />
-                </div>
-                {% endfor %}
-            <a class="btn btn-outline-dark" href="{{path('welcome')}}">Commencez vous Achetez</a>
-        </div>  
-        {% endif %}
         </div>
     </div>
     </div>

@@ -10,9 +10,13 @@ use App\Services\Cart\CartService;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Form\CategoryFormType;
+use App\Repository\ProductRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SebastianBergmann\CodeCoverage\StaticAnalysis\Cache;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 class CategoryController extends AbstractController
 {
 
@@ -66,14 +70,32 @@ class CategoryController extends AbstractController
         ]);
     }
     /**
-     * @IsGranted("ROLE_USER")
-     * @Route("/category/{id}/show", name="show-category")
+     * @Route("/category/{id}/products", name="show-category")
     */
-    public function showProductsByCategory(Category $category,ManagerRegistry $manager)
+    public function showProductsByCategory(Category $category,ManagerRegistry $manager, CategoryRepository $categoryRepository, ProductRepository $productRepository, SessionInterface $session)
     {  
         $products = $manager->getRepository(Product::class)->findBy(['category' => $category]);
-        dd($products);
-        
+        $categories = $categoryRepository->findAll();
+        $panier = $session->get('panier', []); 
+        $panierWithData = [];
+        foreach ($panier as $id => $quantity) {
+            $panierWithData[] = [
+                'product' => $productRepository->find($id),
+                'quantity' => $quantity
+            ];
+        }
+        $Totale = 0;
+        foreach ($panierWithData as $item) {
+            $itemTotale = $item['product']->getPrice() * $item['quantity'];
+            $Totale += $itemTotale;
+        }
+
+        return $this->render('welcome/index.html.twig', [
+            'controller_name' => 'WelcomeController',
+            'categories' => $categories,
+            'products' => $products,
+            'items' => $panierWithData,
+        ]);
     }
     /**
      * @IsGranted("ROLE_USER")

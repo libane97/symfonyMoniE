@@ -8,25 +8,21 @@
  {% include "bannier.html.twig" %}
  <!-- Section-->
         <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
+            <div class="container-fluid px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {# <div class="col-md-6">
+                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-header">Les Categories</div>
-                            <div class="card-body">
                                 <ul class="list-group">
-                                    <li class="list-group-item">Cras justo odio</li>
-                                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                                    <li class="list-group-item">Morbi leo risus</li>
-                                    <li class="list-group-item">Porta ac consectetur ac</li>
-                                    <li class="list-group-item">Vestibulum at eros</li>
+                                         {% for categorie in categories %}     
+                                                <li class="list-group-item list-group-item-action align-items-center"><a href="{{path('show-category', {'id': categorie.id})}}">{{categorie.libelle}}</a></li>
+                                         {% endfor %}
                                 </ul>
-                            </div>
                         </div>
-                    </div> #}
+                    </div>
                     {% if products | length > 0 %}
                         {% for product in products %}
-                            <div class="col-md-6 p-2">
+                            <div class="col-md-9 p-2">
                                 <div class="card card-style h-100 ">
                                  <!--  if archived == 0 the product not disponible or not found of stock  -->
                                     {% if product.archived == 0 %}
@@ -34,7 +30,7 @@
                                     {% endif %}
                                     
                                     <!-- Product image-->
-                                      <a href="{{path('show', {'id': product.id})}}" alt=""> <img class="card-img-top" src="{{ asset('uploads/photos/' ~ product.photo) }}" alt="..." /></a>                  
+                                      <a href="{{path('show', {'id': product.id})}}" alt=""> <img class="img-index" src="{{ asset('uploads/photos/' ~ product.photo) }}" alt="..." /></a>                  
                                     <!-- Product details-->
                                     <div class="card-body ">
                                         <div class="text-center">

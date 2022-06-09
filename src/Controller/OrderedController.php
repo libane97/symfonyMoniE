@@ -200,7 +200,7 @@ class OrderedController extends AbstractController
      //  $sendMessage= $texterInterface->send($sms);
        $getordered = $this->cartService->getDataConfirmOrdered();
        $customer = $getordered->getCustomer();
-       $this->mailerService->sendEmailCustomer($customer->getEmail());
+    //   $this->mailerService->sendEmailCustomer($customer->getEmail());
        $em = $manager->getManager();
        $em->persist($customer);
        $em->flush();

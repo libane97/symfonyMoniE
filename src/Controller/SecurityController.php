@@ -46,7 +46,7 @@ class SecurityController extends AbstractController
  
         $categories = $categoryRepository->findAll();
         return $this->render('security/index.html.twig', ['form' => $form->createView(), 
-        'controller_name' => 'Creer un Utilisateur',
+        'controller_name' => 'Creer votre compte client',
         'categories' => $categories,
         'items' => $this->cartService->getFullCart(),
         'Totale' => $this->cartService->getTotale()
