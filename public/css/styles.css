@@ -11293,7 +11293,7 @@ textarea.form-control-lg {
 
 .banner-center {
   animation-name: example;
-  animation-duration: 7s;
+  background-color: #FFF;
 }
 
 @keyframes example {
@@ -11314,44 +11314,143 @@ textarea.form-control-lg {
   box-shadow: 10px 5px 5px #808080;
   transition: 0 5px 15px 0.3s ease-in-out;
 }
-.card-style-bannier{
-  border-radius : 10px 10px;
-  box-shadow: 4px 5px 7px #000000;
-  transition: box-shadow 0.3s ease-in-out;
+.nav-link {
+   color: #010101;
+   text-transform: uppercase;
 }
-.card-style-bannier:hover {
-  box-shadow: 14px 15px 15px #000000;
-  transition: 0 5px 15px 0.3s ease-in-out;
+.nav-link:hover{
+    color: #010102;
+    text-decoration: underline;
 }
-.button-style{
-  box-shadow: 0 1px 2px #808080;
-  border-radius : 25px 25px;
+
+.caheweb ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  float: right;
+}
+
+.caheweb ul li {
+  display: inline;
+  float: left;
+  font-size: 1.3rem;
+}
+
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #c67605;
+}
+#lblCartCount {
+    font-size: 12px;
+    background: #000;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px; 
 } 
 
-.rounded-circles{
-   width: 300px; 
+.h3-banner {
+   color: #000;
+   font-size: 20px;
 }
 
-.linkWhatsapp{
-   color: white;
-   font-weight: 300;
-}
-.linkWhatsapp:hover{
-   color: white;
-   text-overflow: unset;
+.h3-prime-banner{
+    margin-top: 30px;
 }
 
-.carousel {
-    position: relative;
-    height: 350px;
+hr{
+  width:50%;
+  margin:0 auto;
+  margin-top: 30px;
+  background-color: #000;
 }
 
-.img{
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
   width: 100%;
-  height: 350px;
+  font-size: 18px;
 }
 
-.img-index{
-  width: 100%;
-  height: 250px;
+.card button:hover {
+  opacity: 0.7;
 }
+
+@media (max-width: 768px) {
+  .cahemobile{
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .caheweb{
+    display: none;
+  }
+}
+.img-carou {
+   height: 350px;
+}
+
+.social {
+   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.sociale {
+  text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.banstyle {
+   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.h3-banner{
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.text-style{
+    text-align: center;
+    color: #6c757d !important;
+}
+.form-controls {
+   border-radius: 100px;
+}
+
+.form-controls:hover {
+  color: #000;
+}
+
+.bt{
+  border-radius: 100px;
+}
+
+.flex {
+   display: flex;
+   justify-content: center;
+}
+

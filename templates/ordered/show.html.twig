@@ -8,8 +8,6 @@
             <div class="py-3">
                  <a class="btn btn-primary" href="{{path('ordereds')}}">Liste de la commande</a>
             </div>
-            <div class="card">
-                <div class="card-header">
                      <div class="row">
                             <div class="col-md-4">Le Nom de client : {{ordered.customer.name}}</div>
                             <div class="col-md-4">Le telephone du client est {{ordered.customer.phone}}</div>
@@ -25,7 +23,7 @@
                                 <th scope="col">prix</th>
                                 <th scope="col">quantity</th>
                                 <th scope="col">Date de la commande</th>
-                                <th scope="col">Prix totale</th>
+                                <th scope="col">Prix Unite</th>
                             </tr>
                       
                         
@@ -42,8 +40,12 @@
                                 </tr>
                             {% endfor %}
                             <tr>
+                             <td colspan="5" >Prix de la livraison</td>
+                             <td class="text-center">{{ordered.commune.libelle}} | {{ordered.commune.tarif}}  Fdj</td>
+                            </tr>
+                            <tr>
                              <td colspan="5" >Totale de la commande</td>
-                             <td class="text-center">{{ordered.TotalOrdered}} CFA</td>
+                             <td class="text-center">{{ordered.TotalOrdered}} Fdj</td>
                             </tr>
                             <tr>
                             <td colspan="5" >Acitve Livraison de la commande</td>

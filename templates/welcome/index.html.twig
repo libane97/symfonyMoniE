@@ -6,59 +6,37 @@
  <!--header-->
  {% include "header.html.twig" %}
  {% include "bannier.html.twig" %}
+ {% include "menu.html.twig" %}
  <!-- Section-->
         <section class="py-5">
-            <div class="container-fluid px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                     <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-header">Les Categories</div>
-                                <ul class="list-group">
-                                         {% for categorie in categories %}     
-                                                <li class="list-group-item list-group-item-action align-items-center"><a href="{{path('show-category', {'id': categorie.id})}}">{{categorie.libelle}}</a></li>
-                                         {% endfor %}
-                                </ul>
-                        </div>
-                    </div>
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row">
                     {% if products | length > 0 %}
                         {% for product in products %}
-                            <div class="col-md-9 p-2">
-                                <div class="card card-style h-100 ">
-                                 <!--  if archived == 0 the product not disponible or not found of stock  -->
-                                    {% if product.archived == 0 %}
-                                      <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Pas Disponible</div>
-                                    {% endif %}
-                                    
-                                    <!-- Product image-->
-                                      <a href="{{path('show', {'id': product.id})}}" alt=""> <img class="img-index" src="{{ asset('uploads/photos/' ~ product.photo) }}" alt="..." /></a>                  
-                                    <!-- Product details-->
-                                    <div class="card-body ">
-                                        <div class="text-center">
-                                            <!-- Product name-->
-                                        <h5 class="fw-bolder">{{product.libelle}}</h5>
-                                            <!-- Product price-->
-                                            {{product.price}} cfa
-                                        </div>
-                                    </div>
-                                    <!-- Product actions-->
-                                    <div class="card-footer border-top-0 bg-transparent">
-                                       <!--  if archived != 0 the product  disponible of stock  -->
-                                       {% if product.archived != 0 %}
-                                          <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('cart_add', {'id': product.id})}}"> <i class="bi-cart-fill me-1"></i> Ajouter</a></div>
-                                       {% endif %}
-                                         <!--  if archived == 0 the product not disponible or not found of stock  -->
-                                       {% if product.archived == 0 %}
-                                              <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{path('show', {'id': product.id})}}"> <i class="bi-eye-fill me-1"></i> Voir </a></div>
-                                       {% endif %}
-                                    </div>
-                                </div>
+                            <div class="col-sm-12 col-md-3 p-3">
+                            <div class="card">
+                            <img src="{{ asset('uploads/photos/' ~ product.photo) }}" alt="{{product.photo}}" style="width:100%;">
+                            <h1>{{product.libelle}}</h1>
+                            <p class="price"> {{product.price}} Fdj</p>
+                            <p>Some text about the jeans. Super slim and comfy lorem ipsum lorem jeansum. Lorem jeamsun denim lorem jeansum.</p>
+                               <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
+                          <div class="row p-2">
+                            <div class="col">
+                                  <a class="btn btn-outline-dark mt-auto" href="{{path('show', {'id': product.id})}}"><i class="bi-eye-fill me-1"></i>Voir</a>
+                            </div>
+                            <div class="col">
+                                  <a class="btn btn-outline-dark mt-auto" href="{{path('cart_add', {'id': product.id})}}"><i class="bi-cart-fill me-1"></i>Ajouter</a>
+                            </div>
+                          </div>
+                      </div>
+                            </div>
                             </div>
                         {% endfor %}
                     {% else %}
                     <div class="row">
                         <img class="card-img-top rounded-circle" src="{{asset('assets/images/search.jpg')}}" alt="..." width="50px"/>
                         <h6 class="py-3 text-center">Le produit {{search}} n'existe pas</h6>
-                        <a class="btn btn-outline-dark" href="{{path('welcome')}}">Actualisée la boutique</a>
+                        <a class="btn btn-outline-dark" href="{{path('welcome')}}">Actualisée le boutique</a>
                     </div>
                     {% endif %}
                     

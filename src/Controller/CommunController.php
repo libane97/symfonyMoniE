@@ -44,6 +44,7 @@ class CommunController extends AbstractController
             */
             if ($commune->getMontantMax() > $commune->getTarif()) {
                 $commune->setCreatedAt(new \DateTime());
+                $commune->setArchived(1);
                 $em = $manager->getManager();
                 $em->persist($commune);
                 $em->flush();

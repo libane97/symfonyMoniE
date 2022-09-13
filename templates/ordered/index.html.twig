@@ -5,61 +5,45 @@
 {% block body %}
 {% include "header.html.twig" %}
 {% include "bannier.html.twig" %}
-<div class="container-fluid py-5">
+   <section class="py-5">
+   <div class="container-fluid px-4 px-lg-5 mt-5">
     <div class="row">
-        <div class="col-md-6">
-        <form action="" method="post">
-            <input type="text" name="customer" placeholder="Rechercher" class="form-control " />
-            <div class="form-group py-2">
-                <button type="submit" class="btn btn-outline-success">
-                        Rechercher
-                </button>
-            </div>
-        </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">Formulaire de commande</div>
+       <div class="col-4">
+            <div class="card">
+                <div class="card-header">Formulaire de commande</div>
                 <div class="card-body">
-                    {{ form_start(form) }} 
-                    
-                    {{form_row(form.name  , {'attr': {'placeholder':'votre nom'}})}} 
-                    {{form_row(form.phone  , {'attr': {'placeholder':'votre telephone'}})}} 
-                    {{form_row(form.email  , {'attr': {'placeholder':'votre email'}})}} 
-                    {{form_row(form.phoneFix  , {'attr': {'label':'votre email'}})}} 
-                    {{form_row(form.particularInfo  , {'attr': {'label':'Vous voulez ajouter autres option ecrivez ici '}})}} 
-                    <div class="form-group py-2">
-                        {% if  communs  | length > 0 %}
-                            <select class="form-select me-2" aria-label="Default select example" name="commune">
-                                {% if  communs  | length > 0 %}
-                                        <option value="null">selectionnez un addresse livraison</option>
-                                    {% for commun  in communs %}
-                                        <option value="{{commun.id}}">{{commun.libelle}} - {{commun.tarif}} cfa</option>
-                                    {% endfor %} 
-                                {% endif %} 
-                            </select>
-                        {% endif %}
-                    </div>
-                    <div class="form-group py-2">
-                    <button type="submit" class="btn btn-outline-success">
-                            Valider
-                    </button>
-                    </div>
-                    {{ form_end(form) }} 
+                        {{ form_start(form) }} 
+                        {{form_row(form.name  , {'attr': {'placeholder':'votre nom'}})}} 
+                        {{form_row(form.phone  , {'attr': {'placeholder':'votre telephone'}})}} 
+                        {{form_row(form.email  , {'attr': {'placeholder':'votre email'}})}} 
+                        {{form_row(form.phoneFix  , {'attr': {'label':'votre email'}})}} 
+                        {{form_row(form.particularInfo  , {'attr': {'label':'Vous voulez ajouter autres option ecrivez ici '}})}} 
+                        <div class="form-group py-2">
+                            {% if  communs  | length > 0 %}
+                                <select class="form-select me-2" aria-label="Default select example" name="commune">
+                                    {% if  communs  | length > 0 %}
+                                            <option value="null">selectionnez un addresse livraison</option>
+                                        {% for commun  in communs %}
+                                            <option value="{{commun.id}}">{{commun.libelle}} - {{commun.tarif}} cfa</option>
+                                        {% endfor %} 
+                                    {% endif %} 
+                                </select>
+                            {% endif %}
+                        </div>
+                        <div class="form-group py-2">
+                        <button type="submit" class="btn btn-outline-success">
+                                Valider
+                        </button>
+                        </div>
+                        {{ form_end(form) }} 
                 </div>
-            </div>     
-        </div>
-    <div class="col-md-8">
-        <div class="card">
-        <div class="card-header">Vos produits</div>
-        <div class="card-body">
-            {% if items | length > 0 %}
-                <table class="table table-bordered">
+            </div>
+       </div>
+       <div class="col-8">
+       {% if items | length > 0 %}
+           <table class="table table-bordered">
                 <thead>
                     <tr>
-                    <th scope="col">id</th>
                     <th scope="col">image</th>
                     <th scope="col">libelle</th>
                     <th scope="col">prix</th>
@@ -71,10 +55,9 @@
                 <tbody>
                         {% for item in items %}
                             <tr>
-                                <th scope="row">{{item.product.id}}</th>
                                 <td class="text-center"><img class="card-img-top image" src="{{ asset('uploads/photos/' ~ item.product.photo) }}" alt="..."/></td>
                                 <td class="text-center">{{item.product.libelle}}</td>
-                                <td class="text-center">{{item.product.price}} fDJ </td>
+                                <td class="text-center">{{item.product.price}} cfa </td>
                                 <td class="text-center">{{item.quantity}}</td>
                                 <td class="text-center">{{item.product.price * item.quantity}} cfa </td>
                               
@@ -84,7 +67,7 @@
                 <tfooter>
                     {% if items | length > 0 %}
                         <tr>
-                            <td colspan="5">Totale</td>
+                            <td colspan="4">Totale</td>
                             <td><h5>{{Totale}} <span>cfa</span></h5></td>
                         </tr>
                         
@@ -98,19 +81,15 @@
                 </tfooter>
             </table>
         {% else %}
-        <div class="row">
-                {% for message in app.flashes('success') %}
-                <div class="alert alert-success p-3">
-                <h6 class="py-3 text-center"> {{ message }}  </h6>
-                <img class="card-img-top rounded-circle" src="{{asset('assets/images/shop.jpg')}}" alt="..." width="50px" />
-                </div>
-                {% endfor %}
-            <a class="btn btn-outline-dark" href="{{path('welcome')}}">Commencez vous Achetez</a>
-        </div>  
+            <div class="row">
+                <img class="card-img-top rounded-circle" src="{{asset('assets/images/panier.png')}}" alt="..." width="50px" height="100px"/>
+                <h6 class="py-3 text-center">Votre panier est vide </h6>
+                <a class="btn btn-outline-dark" href="{{path('welcome')}}">Commencez vous Achetez</a>
+            </div>
+        </div>
         {% endif %}
         </div>
-    </div>
-  </div>
 </div>
+</section>
 {% include "footer.html.twig" %}
 {% endblock %}

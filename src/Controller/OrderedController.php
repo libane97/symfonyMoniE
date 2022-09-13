@@ -74,6 +74,7 @@ class OrderedController extends AbstractController
        
         $repo = $this->getDoctrine()->getRepository(OrderedDetail::class);
         $orderedDetail = $repo->findBy(['ordered' => $id]);
+      //  dd($orderedDetail);
         return $this->render('ordered/show.html.twig', ['orderedDetail' => $orderedDetail, 
         'categories' =>  $categories = $this->categoryRepository->findAll(),
         'items' => $this->cartService->getFullCart(),

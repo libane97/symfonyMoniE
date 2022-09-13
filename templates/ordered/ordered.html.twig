@@ -1,15 +1,15 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderedController!{% endblock %}
 
 {% block body %}
 {% include "header.html.twig" %}
-<div class="container-fluid">
-    <div class="row pt-5">
-        {# <div class="col-md-4"></div> #}
-            <div class="col-md-12">
-                <div class="card">
-                <div class="card-header">Liste des Commandes</div>
-                <div class="card-body">
-                <table class="table table-bordered">
+{% include "bannier.html.twig" %}
+   <section class="py-5">
+   <div class="container-fluid px-4 px-lg-5 mt-5">
+    <div class="row">
+       <div class="col-12">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">Numero de commande</th>
@@ -62,9 +62,10 @@
                         </tr>
                     {% endfor %}
                 </tbody>
-                </table>
-                </div>
-            </div>
-    </div>
-<div>
+            </table>
+       </div>
+    </div>  
+</div>
+</section>
+{% include "footer.html.twig" %}
 {% endblock %}
